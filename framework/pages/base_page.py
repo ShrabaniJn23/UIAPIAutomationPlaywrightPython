@@ -16,7 +16,7 @@ class BasePage:
     
     def navigate(self, url: str) -> None:
         """Navigate to a URL"""
-        self.page.goto(url, wait_until="networkidle")
+        self.page.goto(url, wait_until="domcontentloaded")
     
     def click(self, selector: str, timeout: int = None) -> None:
         """Click an element"""
