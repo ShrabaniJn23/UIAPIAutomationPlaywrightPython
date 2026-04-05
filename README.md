@@ -12,6 +12,26 @@ Search/filter booking
 Validate all booking details
 (Optional) Cleanup via API
 
+
+##Sceanrio 2 Steps:
+Go to: https://practice.expandtesting.com/login
+Enter:
+Username: practice
+Password: SuperSecretPassword!
+Click Login
+Verify:
+URL contains /secure
+Success message is visible
+Username is displayed on page
+    API Validation (Backend)
+
+Now here’s the smart part 👇
+
+After login:
+
+Capture session cookie / token
+Call API to validate user
+
 ## Features
 
 - ✅ **UI Testing** with Playwright (Chromium, Firefox, WebKit)
