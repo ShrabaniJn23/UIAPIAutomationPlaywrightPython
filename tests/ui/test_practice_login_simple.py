@@ -1,5 +1,5 @@
 """
-Quick Test Script for Practice Expand Testing Login
+Quick Test Script for Practice Expand Testing Login with Screenshots & Videos
 
 This script demonstrates the complete login flow:
 1. Go to: https://practice.expandtesting.com/login
@@ -11,8 +11,13 @@ This script demonstrates the complete login flow:
    - Success message is visible
    - Username is displayed on page
 
+SCREENSHOTS & VIDEOS:
+✓ Automatic video recording of entire test
+✓ Manual screenshots at key points
+✓ Saved to: reports/screenshots/ and reports/videos/
+
 Run this script with:
-    python -m pytest tests/ui/test_practice_login.py::TestPracticeLoginFlow::test_successful_login_with_all_verifications -v -s
+    python -m pytest tests/ui/test_practice_login_simple.py -v -s
 
 Or run all practice login tests:
     python -m pytest tests/ui/test_practice_login.py -v
@@ -28,6 +33,7 @@ from framework.pages.practice_dashboard_page import PracticeDashboardPage
 def test_practice_login_complete_scenario(page):
     """
     Complete test scenario for practice.expandtesting.com login
+    WITH SCREENSHOTS AND VIDEO RECORDING
     
     Scenario:
     1. Navigate to login page
@@ -38,10 +44,14 @@ def test_practice_login_complete_scenario(page):
     ✓ URL contains /secure
     ✓ Success message is visible
     ✓ Username 'practice' is displayed
+    
+    Captures:
+    📸 Screenshots at key steps
+    🎥 Video of entire test execution
     """
     
     print("\n" + "="*60)
-    print("PLAYWRIGHT LOGIN TEST - PRACTICE EXPAND TESTING")
+    print("🎬 PLAYWRIGHT LOGIN TEST - WITH VIDEO & SCREENSHOTS")
     print("="*60)
     
     # Step 1: Navigate to login page
@@ -50,6 +60,11 @@ def test_practice_login_complete_scenario(page):
     login_page.navigate("https://practice.expandtesting.com/login")
     assert login_page.is_on_login_page(), "Failed to load login page"
     print("✓ Login page loaded successfully")
+    
+    # Screenshot: Login page
+    print("📸 Capturing login page screenshot...")
+    login_page.take_screenshot("01_login_page")
+    page.wait_for_timeout(500)
     
     # Step 2: Enter credentials and login
     print("\n[STEP 2] Entering credentials...")
@@ -60,12 +75,20 @@ def test_practice_login_complete_scenario(page):
         password="SuperSecretPassword!"
     )
     print("✓ Login button clicked")
+    print("📸 Capturing after login click...")
+    login_page.take_screenshot("02_after_login_click")
+    page.wait_for_timeout(500)
     
     # Step 3: Wait for dashboard to load
     print("\n[STEP 3] Waiting for secure dashboard to load...")
     page.wait_for_timeout(3000)
     dashboard_page = PracticeDashboardPage(page)
     print("✓ Dashboard loaded")
+    
+    # Screenshot: Dashboard page
+    print("📸 Capturing dashboard screenshot...")
+    dashboard_page.take_screenshot("03_secure_dashboard")
+    page.wait_for_timeout(500)
     
     # Verification 1: Check URL
     print("\n[VERIFICATION 1] Checking URL...")
@@ -78,6 +101,25 @@ def test_practice_login_complete_scenario(page):
     print("\n[VERIFICATION 2] Checking success message...")
     assert dashboard_page.is_success_message_visible(), "Success message not visible"
     success_msg = dashboard_page.get_success_message()
+    print(f"   Message: {success_msg}")
+    print("✓ Success message visible - PASSED")
+    print("📸 Capturing success message...")
+    dashboard_page.take_screenshot("04_success_message")
+    page.wait_for_timeout(500)
+    
+    # Verification 3: Check username display
+    print("\n[VERIFICATION 3] Checking username display...")
+    assert dashboard_page.is_username_displayed(), "Username not displayed"
+    username = dashboard_page.get_username_text()
+    print(f"   Username: {username}")
+    print("✓ Username displayed - PASSED")
+    
+    print("\n" + "="*60)
+    print("✅ ALL TESTS PASSED!")
+    print("="*60)
+    print("\n📸 SCREENSHOTS saved to: reports/screenshots/")
+    print("🎥 VIDEO saved to: reports/videos/")
+    print("   (Video file: test_practice_login_complete_scenario.webm)\n")
     print(f"   Message: {success_msg}")
     print("✓ Success message visible - PASSED")
     

@@ -36,12 +36,16 @@ Call API to validate user
 
 - ✅ **UI Testing** with Playwright (Chromium, Firefox, WebKit)
 - ✅ **API Testing** with requests library
+- ✅ **Hybrid Testing** - UI login with backend API validation
+- ✅ **Session Capture** - Extract cookies/tokens from browser and reuse in API calls
 - ✅ **Page Object Model (POM)** pattern for UI tests
 - ✅ **Pytest** fixtures and markers
 - ✅ **Configurable settings** via `.env` file
 - ✅ **HTML Reports** with pytest-html
 - ✅ **Utility helpers** for common operations
 - ✅ **Multiple test tags** (smoke, regression, ui, api)
+- ✅ **📸 Screenshot Capture** with timestamps (manual)
+- ✅ **🎥 Video Recording** of test execution (automatic)
 
 ## Project Structure
 
@@ -180,6 +184,84 @@ pytest --screenshot=only-on-failure
 # Run specific number of tests in parallel
 pytest -n 4
 ```
+
+## Screenshots and Videos
+
+The framework automatically records videos and allows manual screenshot capture for all tests.
+
+### Quick Start
+
+```python
+def test_example(page):
+    # Navigate
+    page.goto("https://example.com")
+    
+    # Take screenshot at key points
+    page.screenshot_path("page_loaded")
+    
+    # ... test code ...
+    
+    # Videos are recorded automatically!
+    # Results saved to: reports/screenshots/ and reports/videos/
+```
+
+### Features
+- 📸 **Manual Screenshots** - Call `take_screenshot()` anywhere in your test
+- 🎥 **Automatic Video Recording** - All tests are recorded as WebM videos
+- ⏰ **Timestamps** - Files automatically named with date/time
+- 📁 **Organized Reports** - Separate directories for images and videos
+
+### Documentation
+For complete screenshot and video documentation, see [SCREENSHOTS_AND_VIDEOS.md](SCREENSHOTS_AND_VIDEOS.md)
+
+Includes:
+- How to use screenshots in tests
+- Video viewing and conversion
+- CI/CD integration
+- Troubleshooting guide
+- Best practices
+
+## Hybrid Testing: API Validation After Login
+
+The framework supports **validating UI logins through backend APIs**. This proves your application works correctly at both frontend and backend levels.
+
+### Quick Example
+
+```python
+from tests.api.session_validator import validate_session_with_api
+
+@pytest.mark.ui
+@pytest.mark.api
+def test_login_with_api_validation(page, api_client):
+    # Step 1: UI Login
+    login_page = PracticeLoginPage(page)
+    login_page.login("user", "password")
+    
+    # Step 2: Verify on UI
+    assert dashboard.is_on_secure_dashboard()
+    
+    # Step 3: Validate session via API (one function!)
+    results = validate_session_with_api(login_page, api_client)
+    assert results["api_validated"]
+```
+
+### Workflow
+
+1. **UI Login** - Navigate and login through the website
+2. **Capture Session** - Extract cookies/tokens from browser
+3. **API Validation** - Validate session through backend API
+4. **Session Reuse** - Use captured session for additional API calls
+
+### Documentation
+
+For complete guide on hybrid testing and API validation, see [API_VALIDATION_GUIDE.md](API_VALIDATION_GUIDE.md)
+
+Includes:
+- How to extract sessions from browser
+- How to validate sessions via API
+- Reusing sessions for authenticated API calls
+- Practical examples and use cases
+- Troubleshooting
 
 ## Page Object Model (POM)
 

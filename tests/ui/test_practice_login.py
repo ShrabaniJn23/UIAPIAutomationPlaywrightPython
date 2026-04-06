@@ -26,12 +26,13 @@ class TestPracticeLoginFlow:
     def test_successful_login_with_all_verifications(self, page):
         """
         Test successful login with all verifications
+        WITH SCREENSHOTS at key steps
         
         Steps:
-        1. Navigate to login page
+        1. Navigate to login page ➜ 📸 Screenshot
         2. Enter credentials
-        3. Click login
-        4. Verify URL contains /secure
+        3. Click login ➜ 📸 Screenshot
+        4. Verify URL contains /secure ➜ 📸 Screenshot
         5. Verify success message is visible
         6. Verify username is displayed
         """
@@ -41,12 +42,16 @@ class TestPracticeLoginFlow:
         
         # Verify we are on login page
         assert login_page.is_on_login_page(), "Login page elements are not visible"
+        print("📸 Capturing login page...")
+        login_page.take_screenshot("test_1_login_page")
         
         # Step 2 & 3 & 4: Perform login
         login_page.login(
             username="practice",
             password="SuperSecretPassword!"
         )
+        print("📸 Capturing after login click...")
+        login_page.take_screenshot("test_1_after_login_click")
         
         # Wait for navigation to complete
         dashboard_page = PracticeDashboardPage(page)
@@ -56,6 +61,8 @@ class TestPracticeLoginFlow:
         current_url = dashboard_page.get_url()
         assert "/secure" in current_url, f"URL does not contain '/secure'. Current URL: {current_url}"
         print(f"✓ URL verification passed. URL: {current_url}")
+        print("📸 Capturing secure dashboard...")
+        dashboard_page.take_screenshot("test_1_secure_dashboard")
         
         # Step 5: Verification 2 - Success message is visible
         assert dashboard_page.is_success_message_visible(), "Success message is not visible"
@@ -116,6 +123,7 @@ class TestPracticeLoginFlow:
     def test_login_complete_flow_with_all_details(self, page):
         """
         Complete test with detailed logging of all verification results
+        WITH SCREENSHOTS for evidence
         """
         print("\n=== Testing Practice Expand Testing Login ===")
         
@@ -123,6 +131,7 @@ class TestPracticeLoginFlow:
         login_page = PracticeLoginPage(page)
         login_page.navigate_to_login()
         print("✓ Navigated to login page")
+        login_page.take_screenshot("test_5_login_page")
         
         # Verify login page is loaded
         assert login_page.is_on_login_page()
@@ -134,11 +143,13 @@ class TestPracticeLoginFlow:
             password="SuperSecretPassword!"
         )
         print("✓ Login credentials entered and login button clicked")
+        login_page.take_screenshot("test_5_credentials_entered")
         
         # Create dashboard page object
         dashboard_page = PracticeDashboardPage(page)
         page.wait_for_timeout(3000)
         print("✓ Dashboard page loaded")
+        dashboard_page.take_screenshot("test_5_dashboard_loaded")
         
         # Collect all verification results
         verification_results = dashboard_page.verify_all_elements()
@@ -153,6 +164,7 @@ class TestPracticeLoginFlow:
         assert verification_results["success_message_visible"], "Success message not visible"
         assert verification_results["username_visible"], "Username not visible"
         
+        dashboard_page.take_screenshot("test_5_all_verifications_passed")
         print("\n✓ All verifications passed!")
 
 
